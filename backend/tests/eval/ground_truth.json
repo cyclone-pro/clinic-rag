@@ -1,0 +1,23 @@
+[
+  {"question": "Where is the clinic fire extinguisher inspection checklist documented?", "expected_source_file": "safety_sop.pdf", "expected_page": 3},
+  {"question": "What is the daily refrigerator temperature range for vaccines?", "expected_source_file": "vaccine_storage.pdf", "expected_page": 2},
+  {"question": "How long should sharps containers remain before replacement?", "expected_source_file": "hazard_waste.pdf", "expected_page": 4},
+  {"question": "What are opening shift tasks for front desk staff?", "expected_source_file": "front_desk_sop.pdf", "expected_page": 1},
+  {"question": "What is the no-show follow-up workflow?", "expected_source_file": "appointment_policy.pdf", "expected_page": 5},
+  {"question": "How should critical lab values be escalated?", "expected_source_file": "lab_results_protocol.pdf", "expected_page": 6},
+  {"question": "What PPE is required for wound irrigation procedures?", "expected_source_file": "procedure_room_sop.pdf", "expected_page": 7},
+  {"question": "How do we sanitize exam rooms between patients?", "expected_source_file": "infection_control.pdf", "expected_page": 2},
+  {"question": "What is the policy for documenting verbal orders?", "expected_source_file": "clinical_documentation.pdf", "expected_page": 8},
+  {"question": "How should patient complaints be logged?", "expected_source_file": "quality_management.pdf", "expected_page": 3},
+  {"question": "What is the process for handling medication recalls?", "expected_source_file": "pharmacy_sop.pdf", "expected_page": 5},
+  {"question": "When is a two-person check required for high-risk medications?", "expected_source_file": "medication_safety.pdf", "expected_page": 4},
+  {"question": "How are incoming faxes triaged?", "expected_source_file": "communications_sop.pdf", "expected_page": 2},
+  {"question": "What is the protocol for after-hours call escalation?", "expected_source_file": "on_call_protocol.pdf", "expected_page": 3},
+  {"question": "How long should consent forms be retained?", "expected_source_file": "records_retention.pdf", "expected_page": 6},
+  {"question": "What are handoff requirements at shift change?", "expected_source_file": "nursing_handoff.pdf", "expected_page": 2},
+  {"question": "How is controlled substance inventory documented?", "expected_source_file": "controlled_substances.pdf", "expected_page": 7},
+  {"question": "What steps are required for incident reporting?", "expected_source_file": "incident_response.pdf", "expected_page": 1},
+  {"question": "How do we respond to a suspected HIPAA breach internally?", "expected_source_file": "privacy_security.pdf", "expected_page": 9},
+  {"question": "What is the standard room turnover target time?", "expected_source_file": "operations_kpi.pdf", "expected_page": 2}
+]
+
