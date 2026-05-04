@@ -27,19 +27,37 @@ function authHeaders(): HeadersInit {
   return { Authorization: `Bearer ${authToken}` };
 }
 
-function notifyAuthExpired(): void {
-  window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+function notifyAuthExpired(detail: string): void {
+  window.dispatchEvent(new CustomEvent<string>(AUTH_EXPIRED_EVENT, { detail }));
+}
+
+function shouldClearAuth(response: Response, detail: string): boolean {
+  return (
+    response.status === 401 &&
+    (detail.toLowerCase().includes("expired") ||
+      detail.toLowerCase().includes("invalid") ||
+      detail.toLowerCase().includes("missing auth token"))
+  );
 }
 
 async function parseJSON<T>(response: Response, notifyOnUnauthorized = true): Promise<T> {
   if (!response.ok) {
     const payload = await response.json().catch(() => ({ detail: "Unexpected error" }));
-    if (response.status === 401 && notifyOnUnauthorized) {
-      notifyAuthExpired();
+    const detail = payload.detail ?? "Request failed";
+    if (notifyOnUnauthorized && shouldClearAuth(response, detail)) {
+      notifyAuthExpired(detail);
     }
-    throw new Error(payload.detail ?? "Request failed");
+    throw new Error(detail);
   }
   return response.json() as Promise<T>;
+}
+
+export async function validateToken(): Promise<{ email?: string } | null> {
+  const response = await fetch(`${API_BASE_URL}/auth/me`, {
+    headers: authHeaders()
+  });
+  if (!response.ok) return null;
+  return response.json() as Promise<{ email?: string }>;
 }
 
 export async function login(email: string, password: string): Promise<string> {
@@ -99,10 +117,11 @@ export async function streamChat(
 
   if (!response.ok || !response.body) {
     const payload = await response.json().catch(() => ({ detail: "Chat stream failed" }));
-    if (response.status === 401) {
-      notifyAuthExpired();
+    const detail = payload.detail ?? "Chat stream failed";
+    if (shouldClearAuth(response, detail)) {
+      notifyAuthExpired(detail);
     }
-    throw new Error(payload.detail ?? "Chat stream failed");
+    throw new Error(detail);
   }
 
   const reader = response.body.getReader();

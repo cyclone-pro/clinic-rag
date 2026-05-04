@@ -1,0 +1,20 @@
+name = "clinicdocs-backend-cloudflare"
+main = "src/index.ts"
+compatibility_date = "2026-04-28"
+
+[ai]
+binding = "AI"
+remote = true
+
+[vars]
+ALLOWED_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
+RETRIEVAL_K = "5"
+CHUNK_SIZE = "1200"
+CHUNK_OVERLAP = "150"
+CHAT_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+EMBEDDING_MODEL = "@cf/baai/bge-base-en-v1.5"
+
+# Set secrets with:
+# npx wrangler secret put SUPABASE_URL
+# npx wrangler secret put SUPABASE_ANON_KEY
+# npx wrangler secret put SUPABASE_SERVICE_KEY

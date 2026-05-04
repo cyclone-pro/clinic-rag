@@ -114,3 +114,18 @@ The script logs:
    - Build command: `npm run build`
    - Build output: `dist`
    - Set `VITE_API_BASE_URL` to your Render API URL.
+
+## Cloudflare Backend Option
+
+An alternate Cloudflare Workers backend lives in `backend-cloudflare/`. It keeps the
+same frontend-facing endpoints, uses Cloudflare Workers AI instead of OpenAI, and
+requires the Supabase migration in `backend-cloudflare/migrations/`.
+
+Run the Cloudflare backend locally with the frontend:
+
+```bash
+docker compose -f docker-compose.cloudflare.yml up --build
+```
+
+This serves the Worker backend at `http://localhost:8787` and the frontend at
+`http://localhost:5173` with `VITE_API_BASE_URL=http://localhost:8787`.

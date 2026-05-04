@@ -1,0 +1,1 @@
+dism /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart

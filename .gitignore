@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+.dev.vars
+backend-cloudflare/.dev.vars
 
 # Python
 __pycache__/

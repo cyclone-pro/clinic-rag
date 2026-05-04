@@ -1,7 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(fly version *)"
+      "Bash(fly version *)",
+      "PowerShell(docker info 2>&1)",
+      "PowerShell(wsl --status)",
+      "PowerShell(wsl --list --verbose)",
+      "PowerShell(wsl -d Ubuntu --exec echo \"WSL started ok\")",
+      "PowerShell(findstr /i \"hyper-v\")",
+      "PowerShell(findstr /i \"virtual\")",
+      "PowerShell(Get-Service -Name \"WslService\", \"vmcompute\", \"LxssManager\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Service | Where-Object { $_.Name -match \"wsl|lxss|vmcompute|docker|hns\" } | Select-Object Name, Status, StartType)",
+      "PowerShell(Get-Service | Where-Object { $_.DisplayName -match \"docker|wsl|hyper|container|lxss\" } | Select-Object Name, DisplayName, Status, StartType)",
+      "PowerShell(Get-WindowsOptionalFeature -Online | Where-Object { $_.FeatureName -match \"VirtualMachine|HyperV|WSL|Container\" } | Select-Object FeatureName, State)",
+      "PowerShell(dism /online /get-features /format:table)",
+      "PowerShell(findstr /i \"Microsoft-Windows-Subsystem\\\\|VirtualMachine\\\\|Containers\\\\|HyperV\")",
+      "PowerShell(dism /online /get-featureinfo /featurename:Microsoft-Windows-Subsystem-Linux 2>&1)",
+      "PowerShell(dism /online /get-featureinfo /featurename:VirtualMachinePlatform 2>&1)",
+      "PowerShell(dism /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart 2>&1)",
+      "Bash(npx tsc *)"
     ]
   }
 }

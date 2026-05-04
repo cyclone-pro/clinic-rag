@@ -1,49 +1,41 @@
 services:
-  # db:
-  #   image: ankane/pgvector:latest
-  #   container_name: clinicdocs-db
-  #   environment:
-  #     POSTGRES_DB: clinicdocs
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d clinicdocs"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-
-  backend:
-    build:
-      context: ./backend
-    container_name: clinicdocs-backend
+  backend-cloudflare:
+    image: node:20-bookworm-slim
+    container_name: clinicdocs-backend-cloudflare
+    working_dir: /app
     env_file:
       - .env
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+    command:
+      - sh
+      - -c
+      - |
+        apt-get update
+        apt-get install -y --no-install-recommends ca-certificates
+        update-ca-certificates
+        env | grep -E '^(SUPABASE_URL|SUPABASE_ANON_KEY|SUPABASE_SERVICE_KEY)=' > .dev.vars
+        npm install --include=optional
+        npm run dev
     ports:
-      - "8000:8000"
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      - "8787:8787"
     volumes:
-      - ./backend/app:/app/app
-      - ./backend/migrations:/app/migrations
-      - ./backend/data:/app/data
+      - ./backend-cloudflare:/app
+      - backend_cloudflare_node_modules:/app/node_modules
 
   frontend:
     image: node:20-alpine
     container_name: clinicdocs-frontend
     working_dir: /app
     depends_on:
-      - backend
-    env_file:
-      - .env
+      - backend-cloudflare
+    environment:
+      VITE_API_BASE_URL: http://localhost:8787
     command: sh -c "npm install && npm run dev"
     ports:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
 
+volumes:
+  backend_cloudflare_node_modules:
+  frontend_node_modules:
