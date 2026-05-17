@@ -12,7 +12,7 @@ export type QueryLog = {
   created_at: string;
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8787";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://clinicdocs-backend-cloudflare.cyclone9.workers.dev";
 export const AUTH_EXPIRED_EVENT = "clinicdocs:auth-expired";
 let authToken: string | null = null;
 
