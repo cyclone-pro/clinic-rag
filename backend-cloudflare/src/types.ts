@@ -3,6 +3,7 @@ export type Env = {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
   SUPABASE_SERVICE_KEY: string;
+  SUPABASE_STORAGE_BUCKET?: string;
   ALLOWED_ORIGINS?: string;
   RETRIEVAL_K?: string;
   CHUNK_SIZE?: string;

@@ -7,19 +7,18 @@ import time
 from collections.abc import AsyncGenerator
 
 import structlog
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from app.db import supabase
-from app.deps import require_staff_user
 from app.openai_errors import openai_http_exception
 from app.rate_limit import limiter
 from app.services.llm import LLMService
 from app.services.retriever import RetrieverService
 
 logger = structlog.get_logger(__name__)
-router = APIRouter(prefix="/chat", tags=["chat"], dependencies=[Depends(require_staff_user)])
+router = APIRouter(prefix="/chat", tags=["chat"])
 retriever = RetrieverService()
 llm_service = LLMService()
 

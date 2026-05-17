@@ -6,6 +6,7 @@ It runs on Cloudflare Workers and uses:
 
 - Cloudflare Workers AI for chat and embeddings.
 - Supabase Auth for login and token validation.
+- Supabase Storage for storing uploaded PDFs and serving public file URLs.
 - Supabase REST/RPC for `documents`, `query_logs`, and vector search.
 - `unpdf` for PDF text extraction in the Worker runtime.
 
@@ -17,6 +18,11 @@ Install dependencies:
 cd backend-cloudflare
 npm install
 ```
+
+Create a public Supabase Storage bucket for uploaded PDFs:
+
+`pdfs` is the default bucket name used by this project. If you use a different bucket,
+set `SUPABASE_STORAGE_BUCKET` in `wrangler.toml` or as a Worker variable.
 
 Set Cloudflare Worker secrets:
 
@@ -83,4 +89,10 @@ Then set the frontend env var to the deployed Worker URL:
 
 ```env
 VITE_API_BASE_URL=https://clinicdocs-backend-cloudflare.<your-subdomain>.workers.dev
+```
+
+Uploaded PDFs are stored in Supabase Storage and the Worker keeps the public route:
+
+```text
+https://clinicdocs-backend-cloudflare.<your-subdomain>.workers.dev/pdf/<filename>.pdf
 ```

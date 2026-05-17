@@ -12,9 +12,15 @@ export type QueryLog = {
   created_at: string;
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8787";
 export const AUTH_EXPIRED_EVENT = "clinicdocs:auth-expired";
 let authToken: string | null = null;
+
+export function buildPdfUrl(filename: string, page?: number): string {
+  const encodedFile = encodeURIComponent(filename);
+  const url = `${API_BASE_URL}/pdf/${encodedFile}`;
+  return typeof page === "number" ? `${url}#page=${page}` : url;
+}
 
 export function setAuthToken(token: string | null): void {
   authToken = token;

@@ -1,7 +1,7 @@
 import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 
 import type { ChatMessage } from "@/pages/AppPage";
-import type { Citation } from "@/lib/api";
+import { buildPdfUrl, type Citation } from "@/lib/api";
 import {
   IconClock, IconCopy, IconDoc, IconExternal, IconChev,
   IconPdf, IconPin, IconSend, IconSpark, IconThumb,
@@ -36,7 +36,11 @@ function getGreeting() {
 
 function SourceCard({ citation, index }: { citation: Citation; index: number }) {
   return (
-    <div style={{ textAlign: "left", border: "1px solid var(--line-2)", borderRadius: 10, padding: "10px 12px", background: "#fffdf7", display: "flex", flexDirection: "column", gap: 6 }}>
+    <button
+      type="button"
+      onClick={() => window.open(buildPdfUrl(citation.file, citation.page), "_blank")}
+      style={{ textAlign: "left", border: "1px solid var(--line-2)", borderRadius: 10, padding: "10px 12px", background: "#fffdf7", display: "flex", flexDirection: "column", gap: 6, width: "100%" }}
+    >
       <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: "var(--ink-3)" }}>
         <span style={{ fontFamily: "var(--mono)", color: "var(--brand)", fontWeight: 500 }}>[{index + 1}]</span>
         <IconPdf style={{ color: "var(--brand)" }} />
@@ -45,7 +49,7 @@ function SourceCard({ citation, index }: { citation: Citation; index: number }) 
       </div>
       <div style={{ fontSize: 12, fontWeight: 500, color: "var(--ink)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{citation.file}</div>
       <div style={{ fontSize: 11.5, color: "var(--ink-3)", lineHeight: 1.45, fontStyle: "italic", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>"{citation.snippet}"</div>
-    </div>
+    </button>
   );
 }
 

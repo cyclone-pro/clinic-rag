@@ -1,9 +1,10 @@
 """Supabase Auth endpoints."""
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
 
 from app.config import get_settings
+from app.deps import require_staff_user
 from app.db import supabase_auth
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -46,3 +47,9 @@ def login_user(payload: LoginRequest) -> dict[str, str | int]:
         "expires_at": response.session.expires_at or 0,
         "token_type": "bearer",
     }
+
+
+@router.get("/me")
+def get_current_user(user: dict[str, str] = Depends(require_staff_user)) -> dict[str, str | bool]:
+    """Return the current authenticated staff user."""
+    return {"ok": True, "email": user["email"]}

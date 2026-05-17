@@ -2,10 +2,12 @@ import { extractText, getDocumentProxy } from "unpdf";
 
 import { embedTexts } from "./ai";
 import { ApiError } from "./errors";
-import { insertRows } from "./supabase";
+import { insertRows, publicStorageObjectUrl, uploadStorageObject } from "./supabase";
 import { splitText } from "./text";
 import type { Env } from "./types";
 import { vectorLiteral } from "./vectors";
+
+const PDF_CONTENT_TYPE = "application/pdf";
 
 export async function indexPdfUpload(
   env: Env,
@@ -24,6 +26,8 @@ export async function indexPdfUpload(
   if (pdfBytes.byteLength === 0) {
     throw new ApiError(400, "Uploaded file is empty.");
   }
+
+  await uploadStorageObject(env, file.name, pdfBytes, PDF_CONTENT_TYPE);
 
   const pdf = await getDocumentProxy(pdfBytes);
   const extracted = await extractText(pdf, { mergePages: false });
@@ -59,6 +63,15 @@ export async function indexPdfUpload(
     chunks_created: chunks.length,
     extraction_summary: "native",
   };
+}
+
+export function buildPdfRedirect(env: Env, filename: string): Response {
+  const key = filename.trim();
+  if (!key) {
+    throw new ApiError(400, "PDF filename is required.");
+  }
+
+  return Response.redirect(publicStorageObjectUrl(env, key), 302);
 }
 
 export function isFile(value: unknown): value is File {

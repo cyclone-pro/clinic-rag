@@ -123,10 +123,55 @@ export async function matchDocuments(env: Env, queryVector: number[]): Promise<R
   return response.json<RetrievedChunk[]>();
 }
 
+export async function uploadStorageObject(
+  env: Env,
+  filename: string,
+  body: Uint8Array,
+  contentType: string,
+): Promise<void> {
+  const bucket = storageBucket(env);
+  const response = await fetch(
+    supabaseUrl(env, `/storage/v1/object/${bucket}/${encodePathSegment(filename)}`),
+    {
+      method: "POST",
+      headers: {
+        ...Object.fromEntries(serviceHeaders(env)),
+        "Content-Type": contentType,
+        "x-upsert": "true",
+      },
+      body,
+    },
+  );
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new ApiError(500, detail || "Failed to upload PDF to Supabase Storage.");
+  }
+}
+
+export function publicStorageObjectUrl(env: Env, filename: string): string {
+  const bucket = storageBucket(env);
+  return supabaseUrl(
+    env,
+    `/storage/v1/object/public/${bucket}/${encodePathSegment(filename)}`,
+  );
+}
+
 function serviceHeaders(env: Env): Headers {
   return new Headers({
     apikey: env.SUPABASE_SERVICE_KEY,
     Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`,
     "Content-Type": "application/json",
   });
+}
+
+function storageBucket(env: Env): string {
+  return (env.SUPABASE_STORAGE_BUCKET ?? "pdfs").trim();
+}
+
+function encodePathSegment(value: string): string {
+  return value
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
 }

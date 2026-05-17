@@ -7,6 +7,7 @@ binding = "AI"
 remote = true
 
 [vars]
+SUPABASE_STORAGE_BUCKET = "pdfs"
 ALLOWED_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
 RETRIEVAL_K = "5"
 CHUNK_SIZE = "1200"

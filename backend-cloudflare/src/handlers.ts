@@ -1,7 +1,7 @@
 import { answerQuestion, searchDocuments } from "./ai";
 import { ApiError } from "./errors";
 import { corsHeaders, json, sse } from "./http";
-import { indexPdfUpload, isFile } from "./pdf";
+import { buildPdfRedirect, indexPdfUpload, isFile } from "./pdf";
 import { fetchQueryLogs, insertRows, loginWithPassword } from "./supabase";
 import { buildCitations } from "./text";
 import type { Env } from "./types";
@@ -23,6 +23,10 @@ export async function handleUploadPdf(request: Request, env: Env): Promise<Respo
   }
 
   return json(request, env, await indexPdfUpload(env, file));
+}
+
+export function handleGetPdf(env: Env, filename: string): Response {
+  return buildPdfRedirect(env, filename);
 }
 
 export async function handleQueryLogs(request: Request, env: Env): Promise<Response> {

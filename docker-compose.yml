@@ -14,12 +14,13 @@ services:
         update-ca-certificates
         env | grep -E '^(SUPABASE_URL|SUPABASE_ANON_KEY|SUPABASE_SERVICE_KEY)=' > .dev.vars
         npm install --include=optional
-        npm run dev
+        npm exec -- wrangler dev --ip 0.0.0.0 --port 8787 --persist-to /app/.wrangler/state
     ports:
       - "8787:8787"
     volumes:
       - ./backend-cloudflare:/app
       - backend_cloudflare_node_modules:/app/node_modules
+      - backend_cloudflare_wrangler:/app/.wrangler
 
   frontend:
     image: node:20-alpine
@@ -38,4 +39,5 @@ services:
 
 volumes:
   backend_cloudflare_node_modules:
+  backend_cloudflare_wrangler:
   frontend_node_modules:

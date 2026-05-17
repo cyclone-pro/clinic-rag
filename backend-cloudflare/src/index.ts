@@ -1,6 +1,7 @@
 import { ApiError } from "./errors";
 import {
   handleChatStream,
+  handleGetPdf,
   handleLogin,
   handleQueryLogs,
   handleReindex,
@@ -37,8 +38,12 @@ export default {
         return handleUploadPdf(request, env);
       }
 
+      if (request.method === "GET" && url.pathname.startsWith("/pdf/")) {
+        const filename = decodeURIComponent(url.pathname.replace("/pdf/", ""));
+        return handleGetPdf(env, filename);
+      }
+
       if (request.method === "POST" && url.pathname === "/chat/stream") {
-        await requireStaffUser(request, env);
         return handleChatStream(request, env);
       }
 
