@@ -4,14 +4,6 @@ ClinicDocs AI is a production-oriented RAG chatbot for medical clinic staff to s
 
 Metric placeholder: **40% reduction in SOP lookup time**
 
-## Demo
-
-Add a 30-second demo GIF at `docs/demo.gif` and embed it:
-
-```md
-![ClinicDocs AI demo](docs/demo.gif)
-```
-
 ## Architecture
 
 ```mermaid
